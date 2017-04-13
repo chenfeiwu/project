@@ -10,6 +10,10 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
  
+/**WebSocket示例
+ * @author chenfeiwu
+ * @creation 2017年4月13日
+ */
 //该注解用来指定一个URI，客户端可以通过这个URI来连接到WebSocket。类似Servlet的注解mapping。无需在web.xml中配置。
 @ServerEndpoint("/websocket")
 public class MyWebSocket {
