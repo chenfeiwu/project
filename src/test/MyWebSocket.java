@@ -15,8 +15,6 @@ import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 import javax.websocket.server.ServerEndpoint;
 
-import org.java_websocket.drafts.Draft_17;
-
 /**WebSocket示例
  * @author chenfeiwu
  * @creation 2017年4月13日
@@ -110,8 +108,6 @@ public class MyWebSocket {
 
     public static void main(String[] args) throws IOException, URISyntaxException, DeploymentException {
     	URI uri = new URI("ws://localhost/websocketTest/websocket");
-//    	ExampleClient client = new ExampleClient(uri, new Draft_17());// more about drafts here: http://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
-//    	client.connect();
     	WebSocketContainer container = ContainerProvider.getWebSocketContainer();// 获取WebSocket连接器，其中具体实现可以参照websocket-api.jar的源码,Class.forName("org.apache.tomcat.websocket.WsWebSocketContainer");
     	Session session = container.connectToServer(Client.class, uri);// 连接会话
     	session.getBasicRemote().sendText("123132132131");// 发送文本消息
