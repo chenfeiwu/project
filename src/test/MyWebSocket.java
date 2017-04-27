@@ -1,15 +1,22 @@
 package test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
+import javax.websocket.ContainerProvider;
+import javax.websocket.DeploymentException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.WebSocketContainer;
 import javax.websocket.server.ServerEndpoint;
- 
+
+import org.java_websocket.drafts.Draft_17;
+
 /**WebSocket示例
  * @author chenfeiwu
  * @creation 2017年4月13日
@@ -33,8 +40,8 @@ public class MyWebSocket {
     @OnOpen
     public void onOpen(Session session){
         this.session = session;
-        webSocketSet.add(this);     //加入set中
-        addOnlineCount();           //在线数加1
+        webSocketSet.add(this);    //加入set中
+        addOnlineCount();          //在线数加1
         System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
     }
      
@@ -43,8 +50,8 @@ public class MyWebSocket {
      */
     @OnClose
     public void onClose(){
-        webSocketSet.remove(this);  //从set中删除
-        subOnlineCount();           //在线数减1    
+        webSocketSet.remove(this); //从set中删除
+        subOnlineCount();          //在线数减1    
         System.out.println("有一连接关闭！当前在线人数为" + getOnlineCount());
     }
      
@@ -99,5 +106,16 @@ public class MyWebSocket {
      
     public static synchronized void subOnlineCount() {
         MyWebSocket.onlineCount--;
+    }
+
+    public static void main(String[] args) throws IOException, URISyntaxException, DeploymentException {
+    	URI uri = new URI("ws://localhost/websocketTest/websocket");
+//    	ExampleClient client = new ExampleClient(uri, new Draft_17());// more about drafts here: http://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
+//    	client.connect();
+    	WebSocketContainer container = ContainerProvider.getWebSocketContainer();// 获取WebSocket连接器，其中具体实现可以参照websocket-api.jar的源码,Class.forName("org.apache.tomcat.websocket.WsWebSocketContainer");
+    	Session session = container.connectToServer(Client.class, uri);// 连接会话
+    	session.getBasicRemote().sendText("123132132131");// 发送文本消息
+    	session.getBasicRemote().sendText("4564546");
+    	session.close();
     }
 }
